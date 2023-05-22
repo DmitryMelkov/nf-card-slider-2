@@ -24,17 +24,34 @@ const cardBlockswiper = new Swiper(cardBlock, {
 //btn-sound
 const slideContent = document.querySelectorAll('.card-block__slide');
 
-slideContent.forEach((item) => {
-  const soundBtn = item.querySelector('.card-block__btn-sound');
-  soundBtn.addEventListener('click', () => {
-    const sound = item.querySelector('.card-block__audio');
-    sound.play();
+const slideChangeFunc = () => {
+  cardBlockswiper.on('slideChange', () => {
+    const sound = document.querySelectorAll('.card-block__audio');
+    sound.forEach((item) => {
+      item.classList.remove('play');
+      item.pause();
+    });
   });
-});
+};
 
-cardBlockswiper.on('slideChange', () => {
-  const sound = document.querySelectorAll('.card-block__audio');
-  sound.forEach((item) => {
-    item.pause();
+slideChangeFunc();
+
+const soundBtnFunc = () => {
+  slideContent.forEach((item) => {
+    const soundBtn = item.querySelector('.card-block__btn-sound');
+    soundBtn.addEventListener('click', () => {
+      const sound = item.querySelector('.card-block__audio');
+      sound.classList.add('play');
+      sound.play();
+
+      let soundTime = Math.floor(sound.duration * 1000);
+      // console.log(soundTime);
+
+      // setTimeout(() => {
+      //   cardBlockswiper.slideNext();
+      // }, soundTime);
+    });
   });
-});
+};
+
+soundBtnFunc();
